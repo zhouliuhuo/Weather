@@ -57,6 +57,13 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT>=21){
+            View decorView=getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            );
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
         setContentView(R.layout.activity_weather);
         weatherLayout=(ScrollView)findViewById(R.id.weather_layout);
         titleCity=(TextView)findViewById(R.id.title_city);
@@ -69,8 +76,8 @@ public class WeatherActivity extends AppCompatActivity {
         comfortText=(TextView)findViewById(R.id.comfort_text);
         carWashText=(TextView)findViewById(R.id.car_wash_text);
         sportText=(TextView)findViewById(R.id.sport_text);
-        /*
         bingPicImg=(ImageView)findViewById(R.id.bing_pic_img);
+        /*
         swipeRefresh=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh);//下拉刷新
         drawerLayout =(DrawerLayout)findViewById(R.id.drawer_layout);
         navButton =(Button)findViewById(R.id.nav_button);
@@ -95,13 +102,14 @@ public class WeatherActivity extends AppCompatActivity {
             public void onRefresh() {
                 requestWeather(mWeatherId);
             }
-        });
+        })*/
         String bingPic=prefs.getString("bing_pic",null);
         if(bingPic!=null){
             Glide.with(this).load(bingPic).into(bingPicImg);//如果有缓存直接加载这张图片
         }else{
             loadBingPic();
         }
+        /*
         navButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,12 +157,12 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-        //loadBingPic();
+       loadBingPic();
     }
     /*
      * 加载必应每日一图
      * */
-    /*
+
     private void loadBingPic(){
         String requestBingPic="http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {//获取必应背景图的链接
@@ -179,7 +187,6 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
     }
-    */
     /*
      * 处理并展示Weather实体类中的数据
      * */
